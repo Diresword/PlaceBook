@@ -13,8 +13,7 @@ import com.raywenderlich.placebook.ui.MapsActivity
 class BookmarkInfoWindowAdapter(context: Activity) :
     GoogleMap.InfoWindowAdapter {
     // 3
-    private val binding =
-        ContentBookmarkInfoBinding.inflate(context.layoutInflater)
+    private val binding = ContentBookmarkInfoBinding.inflate(context.layoutInflater)
     // 4
     override fun getInfoWindow(marker: Marker): View? {
 // This function is required, but can return null if
