@@ -8,9 +8,10 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.raywenderlich.placebook.databinding.ContentBookmarkInfoBinding
 import com.raywenderlich.placebook.ui.MapsActivity
+import com.raywenderlich.placebook.viewModel.MapsViewModel
 
 // 2
-class BookmarkInfoWindowAdapter(context: Activity) :
+class BookmarkInfoWindowAdapter(val context: Activity) :
     GoogleMap.InfoWindowAdapter {
     // 3
     private val binding = ContentBookmarkInfoBinding.inflate(context.layoutInflater)
@@ -26,7 +27,19 @@ class BookmarkInfoWindowAdapter(context: Activity) :
         binding.phone.text = marker.snippet ?: ""
 
         val imageView = binding.photo
-        imageView.setImageBitmap((marker.tag as MapsActivity.PlaceInfo).image)
+        //imageView.setImageBitmap((marker.tag as MapsActivity.PlaceInfo).image)
+        when (marker.tag) {
+            // 1
+            is MapsActivity.PlaceInfo -> {
+                imageView.setImageBitmap((marker.tag as MapsActivity.PlaceInfo).image)
+            }
+            // 2
+            is MapsViewModel.BookmarkMarkerView -> {
+                val bookMarkview = marker.tag as MapsViewModel.BookmarkMarkerView
+                // Set imageView bitmap here
+                imageView.setImageBitmap(bookMarkview.getImage(context))
+            }
+        }
 
         return binding.root
     }
