@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -37,12 +38,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMapsBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val mapsViewModel by viewModels<MapsViewModel>()
+    private lateinit var databinding: ActivityMapsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMapsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        databinding = ActivityMapsBinding.inflate(layoutInflater)
+        setContentView(databinding.root)
+//        binding = ActivityMapsBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -50,6 +54,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         setupLocationClient()
+        setupToolbar()
         setupPlacesClient()
     }
 
@@ -288,6 +293,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val intent = Intent(this, BookmarkDetailsActivity::class.java)
         intent.putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
         startActivity(intent)
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(databinding.mainMapView.toolbar)
+
+        val toggle = ActionBarDrawerToggle(this, databinding.drawerLayout,
+        databinding.mainMapView.toolbar, R.string.open_drawer, R.string.close_drawer)
+        toggle.syncState()
     }
 
     companion object {
